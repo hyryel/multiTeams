@@ -164,7 +164,7 @@ namespace MMT.UI
             }
         }
 
-        private async void LstProfiles_KeyUp(object sender, KeyEventArgs e)
+        private async void LstProfiles_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
         {
             if (e.Key == Key.Delete)
             {
