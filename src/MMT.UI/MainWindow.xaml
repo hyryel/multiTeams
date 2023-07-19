@@ -40,10 +40,18 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <ListBox Grid.Row="0" Name="lstProfiles" ItemsSource="{Binding Profiles}" Margin="0,0,0,8" KeyUp="LstProfiles_KeyUp" SelectionMode="Single">
+                    <ListBox Grid.Row="0" Name="lstProfiles" ItemsSource="{Binding Profiles}" Margin="0,0,0,8" KeyUp="LstProfiles_KeyUp" SelectionMode="Single" MouseDoubleClick="BtnLaunchTeams_Click">
                         <ListBox.ItemTemplate>
-                            <DataTemplate DataType="{x:Type core:Profile}">
-                                <StackPanel Orientation="Horizontal">
+                            <DataTemplate DataType="{x:Type core:Profile}" >
+                                <StackPanel Orientation="Horizontal" >
+                                    <StackPanel.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Header="Launch" />
+                                            <MenuItem Header="Disable"/>
+                                            <MenuItem Header="Rename"/>
+                                            <MenuItem Header="Remove"/>
+                                        </ContextMenu>
+                                    </StackPanel.ContextMenu>
                                     <TextBlock Text="[Disabled] " Foreground="Gray" Visibility="{Binding IsDisabled, Converter={StaticResource BooleanToVisibilityConverter}}" />
                                     <TextBlock Text="{Binding Name}">
                                         <TextBlock.Resources>
@@ -59,16 +67,11 @@
                                 </StackPanel>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
-                        <ListBox.ItemContainerStyle>
-                            <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
-                                <EventSetter Event="MouseDoubleClick" Handler="LstProfiles_MouseDoubleClick"/>
-                            </Style>
-                        </ListBox.ItemContainerStyle>
                     </ListBox>
 
                     <Grid Grid.Row="1" Margin="5" Height="Auto">
                         <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-                            <Button Name="btnLaunchTeams"  Width="100" Content="Launch Teams" Click="BtnLaunchTeams_Click" IsEnabled="{Binding ElementName=lstProfiles, Path=SelectedItems.Count}">
+                            <Button Width="100" Content="Launch Teams" IsEnabled="{Binding ElementName=lstProfiles, Path=SelectedItems.Count}">
                             </Button>
                             <CheckBox Name="chkAutoStart" Margin="8,0,0,0" HorizontalAlignment="Left" Content="Auto start" Click="ChkAutoStart_Click"/>
                         </StackPanel>

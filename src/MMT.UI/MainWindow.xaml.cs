@@ -138,28 +138,22 @@ namespace MMT.UI
             ChangeTabVisibility();
         }
 
-        private void BtnLaunchTeams_Click(object sender, RoutedEventArgs e)
+        private void BtnLaunchTeams_Click(object sender, MouseButtonEventArgs e)
         {
-            try
+            if (e.OriginalSource is FrameworkElement fwe && fwe.DataContext is Profile profile)
             {
-                if (lstProfiles.SelectedItems?.Count > 0)
+                try
                 {
-                    lstProfiles.SelectedItems.OfType<Profile>()
-                        .Where((item) => !item.IsDisabled)
-                        .ToList()
-                        .ForEach((item) =>
-                    {
-                        _teamsLauncher.Start(item);
-                    });
+                    _teamsLauncher.Start(profile);
                 }
-            }
-            catch (Exception ex)
-            {
-                MessageHelper.Info(ex.Message);
+                catch (Exception ex)
+                {
+                    MessageHelper.Info(ex.Message);
+                }
             }
         }
 
-        private async void LstProfiles_KeyUp(object sender, KeyEventArgs e)
+        private async void LstProfiles_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
         {
             if (e.Key == Key.Delete)
             {
@@ -200,15 +194,15 @@ namespace MMT.UI
 
         private async void LstProfiles_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if (sender is ListBoxItem item && item.DataContext is Profile selectedProfile)
+            if (e.OriginalSource is System.Windows.FrameworkElement ctr && ctr.DataContext is Profile prf)
             {
-                if (selectedProfile.IsDisabled)
+                if (prf.IsDisabled)
                 {
-                    _profileManager.Enable(selectedProfile);
+                    _profileManager.Enable(prf);
                 }
-                else if (await MessageHelper.Confirm($"Disable profile?\nProfile name: {selectedProfile.Name}") == MessageDialogResult.Affirmative)
+                else if (await MessageHelper.Confirm($"Disable profile?\nProfile name: {prf.Name}") == MessageDialogResult.Affirmative)
                 {
-                    _profileManager.Disable(selectedProfile);
+                    _profileManager.Disable(prf);
                 }
             }
         }

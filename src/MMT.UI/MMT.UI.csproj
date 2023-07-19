@@ -1,23 +1,24 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net7.0-windows</TargetFramework>
-    <UseWPF>true</UseWPF>
-    <AssemblyName>Multi MS Teams</AssemblyName>
-    <ApplicationIcon>Taskbar.ico</ApplicationIcon>
-    <Authors>Cleriton Cunha</Authors>
-    <Company />
-    <RepositoryUrl>https://github.com/TonCunha/multi-microsoft-teams</RepositoryUrl>
-    <PackageProjectUrl>https://github.com/TonCunha/multi-microsoft-teams</PackageProjectUrl>
-    <Copyright>Cleriton Cunha</Copyright>
-    <Description>Launcher to manage profiles and open multiple instances of Microsoft Teams desktop version. It's compatible with many accounts and organizations (tenants).</Description>
-    <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <AssemblyVersion>1.0.0.5</AssemblyVersion>
-    <FileVersion>1.0.0.5</FileVersion>
-    <Version>1.0.0.5</Version>
-    <Win32Resource />        
-  </PropertyGroup>
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net7.0-windows</TargetFramework>
+        <UseWPF>true</UseWPF>
+        <UseWindowsForms>true</UseWindowsForms>
+        <AssemblyName>Multi MS Teams</AssemblyName>
+        <ApplicationIcon>Taskbar.ico</ApplicationIcon>
+        <Authors>Nicolas PERNOT (based on Cleriton Cunha)</Authors>
+        <Company />
+        <RepositoryUrl>https://github.com/hyryel/multiTeams</RepositoryUrl>
+        <PackageProjectUrl>https://github.com/hyryel/multiTeams</PackageProjectUrl>
+        <Copyright>Nicolas PERNOT</Copyright>
+        <Description>Launcher to manage profiles and open multiple instances of Microsoft Teams desktop version. It's compatible with many accounts and organizations (tenants).</Description>
+        <PackageLicenseFile>LICENSE</PackageLicenseFile>
+        <AssemblyVersion>1.0.0.5</AssemblyVersion>
+        <FileVersion>1.0.0.5</FileVersion>
+        <Version>1.0.0.5</Version>
+        <Win32Resource />
+    </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Hardcodet.NotifyIcon.Wpf.NetCore" Version="1.1.5" />
