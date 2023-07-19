@@ -1,4 +1,4 @@
-﻿using Hardcodet.Wpf.TaskbarNotification;
+using Hardcodet.Wpf.TaskbarNotification;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using MMT.Core;
@@ -72,7 +72,7 @@ namespace MMT.UI
                 WindowState = WindowState.Minimized;
                 MetroWindow_StateChanged(null, null);
 
-                Thread thread = new Thread(() =>
+                Thread thread = new(() =>
                 {
                     foreach (Profile item in lstProfiles.Items.OfType<Profile>())
                     {
@@ -91,12 +91,12 @@ namespace MMT.UI
             if (WindowState == WindowState.Minimized)
             {
                 Visibility = Visibility.Collapsed;
-                _tray.Visibility = Visibility.Visible;
-                _tray.ShowBalloonTip(StaticResources.AppName, "This app is running", BalloonIcon.Info);
+                //_tray.Visibility = Visibility.Visible;
+                //_tray.ShowBalloonTip(StaticResources.AppName, "This app is running", BalloonIcon.Info);
             }
             else
             {
-                _tray.Visibility = Visibility.Collapsed;
+                //_tray.Visibility = Visibility.Collapsed;
                 Visibility = Visibility.Visible;
             }
         }

@@ -126,10 +126,10 @@ namespace MMT.Core
         {
             string _disabledProfilesPath = Path.Combine(Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName)!, "disabled-profiles.txt");
 
-            List<string> oldDisabledProfiles = new List<string>();
+            List<string> oldDisabledProfiles = new();
             if (File.Exists(_disabledProfilesPath))
             {
-                using StreamReader? sr = new StreamReader(_disabledProfilesPath);
+                using StreamReader? sr = new(_disabledProfilesPath);
                 while (!sr.EndOfStream)
                 {
                     oldDisabledProfiles.Add(sr.ReadLine()!);
