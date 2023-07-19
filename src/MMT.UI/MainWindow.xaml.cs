@@ -1,7 +1,8 @@
-using Hardcodet.Wpf.TaskbarNotification;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
+
 using MMT.Core;
+
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -12,6 +13,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Navigation;
+using System.Windows.Forms;
 
 namespace MMT.UI
 {
@@ -21,15 +23,35 @@ namespace MMT.UI
         private readonly TeamsLauncher _teamsLauncher;
         private readonly RegistryManager _registryManager;
 
+        public NotifyIcon TrayIcon { get; set; }
         public MainWindow()
         {
             InitializeComponent();
+
+            TrayIcon = new NotifyIcon()
+            {
+              Icon = Resource.Taskbar,
+              Visible= true,
+              BalloonTipTitle = MMT.Core.StaticResources.AppName,
+              Text = StaticResources.AppName,
+            };
+
+            TrayIcon.Click += TrayIcon_Click;
+
             _profileManager = new ProfileManager();
             _teamsLauncher = new TeamsLauncher();
             _registryManager = new RegistryManager();
             DataContext = _profileManager;
+            App.Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
+
             ChangeTabVisibility();
             AutoStartCheck();
+        }
+
+        private void TrayIcon_Click(object sender, EventArgs e)
+        {
+            this.WindowState = WindowState.Normal;
+            this.ShowInTaskbar = true;
         }
 
         private void ChangeTabVisibility()
@@ -59,7 +81,6 @@ namespace MMT.UI
         {
             Show();
             WindowState = WindowState.Normal;
-            MetroWindow_StateChanged(sender, e);
         }
 
         private void AutoStartCheck()
@@ -70,7 +91,6 @@ namespace MMT.UI
             {
                 Show();
                 WindowState = WindowState.Minimized;
-                MetroWindow_StateChanged(null, null);
 
                 Thread thread = new(() =>
                 {
@@ -83,21 +103,6 @@ namespace MMT.UI
                     }
                 });
                 thread.Start();
-            }
-        }
-
-        private void MetroWindow_StateChanged(object sender, EventArgs e)
-        {
-            if (WindowState == WindowState.Minimized)
-            {
-                Visibility = Visibility.Collapsed;
-                //_tray.Visibility = Visibility.Visible;
-                //_tray.ShowBalloonTip(StaticResources.AppName, "This app is running", BalloonIcon.Info);
-            }
-            else
-            {
-                //_tray.Visibility = Visibility.Collapsed;
-                Visibility = Visibility.Visible;
             }
         }
 
@@ -211,6 +216,13 @@ namespace MMT.UI
                     _profileManager.Disable(selectedProfile);
                 }
             }
+        }
+
+        private void MetroWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            e.Cancel = true;
+            this.WindowState = WindowState.Minimized;
+            this.ShowInTaskbar = false;
         }
     }
 }
