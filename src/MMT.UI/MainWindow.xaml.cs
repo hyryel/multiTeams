@@ -24,19 +24,44 @@ namespace MMT.UI
         private readonly RegistryManager _registryManager;
 
         public NotifyIcon TrayIcon { get; set; }
+        #region Tray Icon initialization
+        private void InitializaTrayIcon()
+        {
+            TrayIcon = new NotifyIcon()
+            {
+                Icon = Resource.Taskbar,
+                Visible = true,
+                BalloonTipTitle = MMT.Core.StaticResources.AppName,
+                Text = StaticResources.AppName,
+            };
+
+            //context tray icon initialization
+            TrayIcon.ContextMenuStrip = new ContextMenuStrip();
+            //exit button
+            new ToolStripButton("Exit");
+            var trayExitButton = TrayIcon.ContextMenuStrip.Items.Add("Exit");
+            trayExitButton.Click += TrayExitButton_Click;
+            var trayRestaureButton = TrayIcon.ContextMenuStrip.Items.Add("Restore");
+            trayRestaureButton.Click += TrayIcon_DoubleClick;
+            TrayIcon.DoubleClick += TrayIcon_DoubleClick;
+        }
+
+        private void TrayExitButton_Click(object sender, EventArgs e)
+        {
+            App.Current.Shutdown();
+        }
+
+        private void TrayIcon_DoubleClick(object sender, EventArgs e)
+        {
+            this.WindowState = WindowState.Normal;
+            this.ShowInTaskbar = true;
+        }
+        #endregion
+
         public MainWindow()
         {
             InitializeComponent();
-
-            TrayIcon = new NotifyIcon()
-            {
-              Icon = Resource.Taskbar,
-              Visible= true,
-              BalloonTipTitle = MMT.Core.StaticResources.AppName,
-              Text = StaticResources.AppName,
-            };
-
-            TrayIcon.Click += TrayIcon_Click;
+            InitializaTrayIcon();
 
             _profileManager = new ProfileManager();
             _teamsLauncher = new TeamsLauncher();
@@ -48,11 +73,6 @@ namespace MMT.UI
             AutoStartCheck();
         }
 
-        private void TrayIcon_Click(object sender, EventArgs e)
-        {
-            this.WindowState = WindowState.Normal;
-            this.ShowInTaskbar = true;
-        }
 
         private void ChangeTabVisibility()
         {
@@ -223,6 +243,10 @@ namespace MMT.UI
             e.Cancel = true;
             this.WindowState = WindowState.Minimized;
             this.ShowInTaskbar = false;
+            TrayIcon.BalloonTipIcon = ToolTipIcon.Info;
+            TrayIcon.BalloonTipTitle = "See... ?";
+            TrayIcon.BalloonTipText = "Multi-Teams is in system tray right now !";
+            TrayIcon.ShowBalloonTip(2000);
         }
     }
 }
